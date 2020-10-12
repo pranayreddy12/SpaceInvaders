@@ -1,2 +1,2 @@
 # SpaceInvaders
-Developed basic version of space invaders game. 
+Developed a small game. I call it space invaders. 
