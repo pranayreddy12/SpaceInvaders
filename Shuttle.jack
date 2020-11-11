@@ -1,0 +1,71 @@
+class Shuttle {
+
+   field int x; 
+   field int len;
+   field int speed;
+   field Bullet bullet;
+   field int hit;
+
+   
+   constructor Shuttle new(int Ax, int Alen) {
+      let x = Ax;
+	  let len = Alen;
+	  let speed = 2;
+	  let hit = 0;
+      do draw();
+	  let bullet = Bullet.new();
+      return this;
+   }
+
+   /** Disposes this square. */
+   method void dispose() {
+      do Memory.deAlloc(this);
+      return;
+   }
+
+   method void draw() {
+      do Screen.setColor(true);
+      do Screen.drawRectangle(0, 250, x+len, 255);
+      return;
+   }
+
+   /** Erases the Shuttle from the screen. */
+   method void erase() {
+      do Screen.setColor(false);
+      do Screen.drawRectangle(0, 250, x+len, 255);
+      return;
+   }
+
+   /** Moves the Shuttle left*/
+   method void moveLeft() {
+      if (x > 1) {
+         do Screen.setColor(false);
+         do Screen.drawRectangle(x+len-speed, 250, x+len, 255);
+         //let x = x - 2;
+         do Screen.setColor(true);
+         do Screen.drawRectangle(x-speed, 250, x, 255);
+		 let x = x-speed;
+      }
+      return;
+   }
+
+   /** Moves the Shuttle right*/
+   method void moveRight() {
+      if (x+len+speed < 510) {
+         do Screen.setColor(false);
+         do Screen.drawRectangle(x, 250, x+speed, 255);
+         //let x = x + 2;
+         do Screen.setColor(true);
+         do Screen.drawRectangle(x+speed, 250, x+len+speed, 255);
+		 let x=x+speed;
+      }
+      return;
+   }
+   /* Fire the bullet */
+   method int fire(int eX, int eY, int eSize){
+		let hit = bullet.fire(x,x+len,eX, eY, eSize);	
+		do bullet.dispose();
+		return hit ;
+   }
+   
+}

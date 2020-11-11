@@ -1,0 +1,79 @@
+class Enemies {
+
+	
+	//field int lop = 3;
+	
+	field int speed ;
+	field int size ;
+	field int x ; 
+	field int y ;
+	field int sum;
+	field int killCount;
+
+	constructor Enemies new(){
+		let speed = 4;
+		let size = 8;
+		let y = 20;
+		let sum = 0;
+		let killCount = 0;
+		let x = 30;
+		return this;
+	}
+
+	
+	   /** Disposes this game. */
+    method void dispose() {
+       do Memory.deAlloc(this);
+       return;
+    }
+	
+	method void moveDown(int locX){		
+		if(y+size+speed+1 < 250){
+			do Screen.setColor(false);
+			do Screen.drawRectangle(x, y, x+size, y+speed);
+			do Screen.setColor(true);
+			do Screen.drawRectangle(x, y+size, x+size, y+speed+size);
+			let y = y + speed;
+			do Sys.wait(1);
+		}else{
+			let killCount = killCount + 1;
+			do Output.moveCursor(0,20);
+			do Output.printString("Enemies Landed:");
+			do Output.printInt(killCount);
+			let x = locX;
+			do Screen.setColor(false);
+			do Screen.drawRectangle(x, y, x+size, y+size);
+			let y = 20;
+		}	
+		
+		return;
+	}
+	
+	method void reStart(int locX){
+		do Screen.setColor(false);
+		do Screen.drawRectangle(x, y, x+size, y+size);
+		let y = 20;
+		let x = locX;
+		return;
+		
+	}
+	
+	method int getX(){
+		return x;
+	}
+	
+	method int getY(){
+		return y;
+	}
+	
+	method int getSize(){
+		return size;
+	}
+	
+	method int getKillCount(){
+		return killCount;
+	}
+	
+	
+	
+}

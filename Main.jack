@@ -1,0 +1,13 @@
+
+
+// MAIN CLASS TO START THE GAME. 
+
+class Main {
+    function void main() {
+        var SpaceJack game;
+        let game = SpaceJack.new();
+		do game.run();
+        do game.dispose();
+        return;
+    }
+}

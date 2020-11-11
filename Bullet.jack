@@ -1,0 +1,53 @@
+class Bullet {
+	
+	field int size;
+	field int speed;
+	field int y;
+	field int x;
+
+	constructor Bullet new(){
+		let size = 5;
+		let speed = 2;
+		return this;
+	}
+	
+	   /** Disposes this square. */
+	method void dispose() {
+      do Memory.deAlloc(this);
+      return;
+	}
+	
+	method bool fire(int x1, int x2, int eX, int eY, int eSize){
+		let x = (x1 + x2)/2;
+		let y = 240;		
+		while(y > 20){
+	
+			if((x=eX)|(x=(eX+eSize))){
+				if((y=eY) | (y=(eY+eSize))){
+					do Screen.setColor(false);
+					do Screen.drawRectangle(x, y, x+size, y+size);
+					return 1;
+				}
+			}
+			
+			if((x>eX)&(x<(eX+eSize))){
+				if((y>eY) & (y<(eY+eSize))){
+					do Screen.setColor(false);
+					do Screen.drawRectangle(x, y, x+size, y+size);
+					return 1;
+				}
+			}
+			
+			do Screen.setColor(false);
+			do Screen.drawRectangle(x, y+size-speed, x+size, y+size);
+			do Screen.setColor(true);
+			do Screen.drawRectangle(x, y-speed, x+size, y);
+			let y = y - speed;
+			do Sys.wait(2);
+		}
+		do Screen.setColor(false);
+		do Screen.drawRectangle(x, 20, x+size, 20+size);
+		
+		return 0;
+	}
+}

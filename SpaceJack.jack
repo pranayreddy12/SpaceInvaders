@@ -1,0 +1,97 @@
+
+
+class SpaceJack {
+   field Shuttle shuttle; // The space shuttle of this game
+   field Enemies enemies; // Enemy Object
+   field int direction;  // Shuttle SLiding direction Left/Right 0/1
+                        
+   field int ranCount;   // temporary variable for generating random count
+   field bool hit;
+   field int rand;
+   field int gameSpeed;
+
+   /** Constructs a new Square Game. */
+   constructor SpaceJack new() {
+      
+      let shuttle = Shuttle.new(0,40);
+	  let enemies = Enemies.new();
+      let direction = 0; 
+	  let ranCount = 0;
+	  let rand = 50;
+	  let gameSpeed = 100;
+	  
+	  do Output.printString("Level: ");
+	  do Output.printInt((100-gameSpeed)/5);
+	  do Output.moveCursor(0,20);
+	  do Output.printString("Enemies Landed:0");
+      
+	  return this;
+   }
+
+   /** Disposes this game. */
+   method void dispose() {
+      do shuttle.dispose();
+	  do enemies.dispose();
+      do Memory.deAlloc(this);
+      return;
+   }
+
+   /** Moves the Shuttle. */
+   method void moveShuttle() {
+      if (direction = 1) { do shuttle.moveLeft();}
+      if (direction = 2) { do shuttle.moveRight();}
+      do Sys.wait(5); 
+      return;
+   }
+
+  
+   method void run() {
+      var char key;  
+      var boolean exit;
+      let exit = false;
+      
+      while (~exit) {
+         // waits for a key to be pressed
+	     let rand = rand + 1;
+		 if(rand > 450){
+			let rand = 40;
+		}
+		 let key = Keyboard.keyPressed();
+         if (key = 81)  { let exit = true; }     // q key
+         if (key = 130) { let direction = 1; }   // left arrow
+         if (key = 132) { let direction = 2; }   // right arrow
+		 if (key = 131) { 
+			let hit = shuttle.fire(enemies.getX(), enemies.getY(), enemies.getSize()); 		// Check if you have a hit. 
+			if(hit){
+				do enemies.reStart(rand);
+				do Output.moveCursor(0,0);
+				do Output.printString("Level: ");
+				do Output.printInt((100-gameSpeed)/5);
+				let gameSpeed = gameSpeed - 5;												// Speed up the enemy falling 
+			}
+		}
+         do moveShuttle();
+		 if(ranCount = gameSpeed | (ranCount > gameSpeed)){
+			do enemies.moveDown(rand);
+			let ranCount = 0;
+		}
+		let ranCount = ranCount + 1;
+		if(gameSpeed = 5){
+			do Screen.clearScreen();
+			do Output.moveCursor(10,10);
+			do Output.printString("CONGRATULATIONS !! YOU WON !!");
+			return;
+		}
+		if(enemies.getKillCount() = 3){
+			do Screen.clearScreen();
+			do Output.moveCursor(20,20);
+			do Output.printString("YOU ARE DEAD.");
+			do Sys.wait(5);
+			return;
+		}
+		
+     } 
+     return;
+   }
+   
+}
